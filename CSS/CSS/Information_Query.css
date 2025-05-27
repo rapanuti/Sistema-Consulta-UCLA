@@ -169,7 +169,6 @@ main {
 .table1 th:nth-child(6),
 .table1 th:nth-child(7),
 .table1 th:nth-child(8),
-.table1 th:nth-child(9),
 .table1 th:nth-child(10),
 .table1 th:nth-child(11),
 .table1 th:nth-child(12),
@@ -178,8 +177,12 @@ main {
 .table1 th:nth-child(15),
 .table1 th:nth-child(16),
 .table1 th:nth-child(17),
-.table1 td:nth-child(18),
-.table1 td:nth-child(19),
+.table1 th:nth-child(18),
+.table1 th:nth-child(19),
+.table1 th:nth-child(20),
+.table1 th:nth-child(21),
+.table1 th:nth-child(22),
+.table1 th:nth-child(23),
 
 .table1 td:nth-child(1),
 .table1 td:nth-child(4),
@@ -187,7 +190,6 @@ main {
 .table1 td:nth-child(6),
 .table1 td:nth-child(7),
 .table1 td:nth-child(8),
-.table1 td:nth-child(9),
 .table1 td:nth-child(10),
 .table1 td:nth-child(11),
 .table1 td:nth-child(12),
@@ -197,7 +199,11 @@ main {
 .table1 td:nth-child(16),
 .table1 td:nth-child(17),
 .table1 td:nth-child(18),
-.table1 td:nth-child(19) {
+.table1 td:nth-child(19),
+.table1 td:nth-child(20),
+.table1 td:nth-child(21),
+.table1 td:nth-child(22),
+.table1 td:nth-child(23) {
     display: none !important;
 }
 
@@ -208,7 +214,6 @@ main {
 .table2 th:nth-child(6),
 .table2 th:nth-child(7),
 .table2 th:nth-child(8),
-.table2 th:nth-child(11),
 .table2 th:nth-child(12),
 .table2 th:nth-child(13),
 .table2 th:nth-child(14),
@@ -221,7 +226,6 @@ main {
 .table2 th:nth-child(21),
 .table2 th:nth-child(22),
 .table2 th:nth-child(23),
-.table2 th:nth-child(24),
 
 .table2 td:nth-child(1),
 .table2 td:nth-child(2),
@@ -230,7 +234,6 @@ main {
 .table2 td:nth-child(6),
 .table2 td:nth-child(7),
 .table2 td:nth-child(8),
-.table2 td:nth-child(11),
 .table2 td:nth-child(12),
 .table2 td:nth-child(13),
 .table2 td:nth-child(14),
@@ -242,8 +245,7 @@ main {
 .table2 td:nth-child(20),
 .table2 td:nth-child(21),
 .table2 td:nth-child(22),
-.table2 td:nth-child(23),
-.table2 td:nth-child(24) {
+.table2 td:nth-child(23) {
     display: none !important;
 }
 

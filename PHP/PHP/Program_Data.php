@@ -1,5 +1,5 @@
 <?php
-// Initialize the session, include database connection settings, require study consultation config, and check user authentication
+// Initialize the session, include database connection settings, require program consultation config, and check user authentication
 session_start();
 include_once('../Configuration/Connection_DB.php');
 
@@ -15,7 +15,7 @@ if (!isset($_SESSION['Id_User'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Datos Académicos</title>
+    <title>Registrar Datos de Programa</title>
 
     <!-- External stylesheet links -->
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
@@ -23,7 +23,7 @@ if (!isset($_SESSION['Id_User'])) {
     <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
     <link rel="stylesheet" href="../CSS/Sidebar.css">
-    <link rel="stylesheet" href="../CSS/Academic_Data.css">
+    <link rel="stylesheet" href="../CSS/Program_Data.css">
     <link rel="icon" href="../images/favicon-16x16.png" type="image/x-icon">
 
 </head>
@@ -82,16 +82,17 @@ if (!isset($_SESSION['Id_User'])) {
                         <div class="nav_dropdown">
                             <a href="#" class="nav_link">
                                 <i class="bx bx-book-bookmark nav_icon" style="color: #012460;"></i>
-                                <span class="nav_name">Estudios</span>
+                                <span class="nav_name">Programas</span>
                                 <i class="bx bx-chevron-down nav_dropdown-icon" style="color: #012460;"></i>
                             </a>
 
                             <div class="nav_dropdown-collapse">
                                 <div class="nav_dropdown-content">
-                                    <a href="Academic_Data.php" class="nav_dropdown-item">Registrar Datos Académicos</a>
-                                    <a href="Academic_Consultation.php" class="nav_dropdown-item">Consultar Datos Académicos</a>
-                                    <a href="Register_Study.php" class="nav_dropdown-item">Registrar Tipo de Estudios</a>
-                                    <a href="Study_Information.php" class="nav_dropdown-item">Consultar Estudios</a>
+                                    <a href="Program_Data.php" class="nav_dropdown-item">Registrar Datos de Programa</a>
+                                    <a href="Program_Consultation.php" class="nav_dropdown-item">Consultar Datos de programa</a>
+                                    <a href="Register_Program.php" class="nav_dropdown-item">Registrar Programa de Educación Permanente</a>
+                                    <a href="Register_Cohort.php" class="nav_dropdown-item">Registrar Cohorte</a>
+                                    <a href="Program_Information.php" class="nav_dropdown-item">Consultar Programas</a>
                                 </div>
                             </div>
                         </div>
@@ -128,34 +129,32 @@ if (!isset($_SESSION['Id_User'])) {
     <main>
         <section>
             <div class="container mt-5">
-                <h2 class="mb-4">Registrar Datos Académicos</h2>
+                <h2 class="mb-4">Registrar Datos de Programa</h2>
 
                 <!-- Registration Form -->
-                <form action="../Configuration/Academic_Data.php" id="study_form" method="POST">
+                <form action="../Configuration/Program_Data.php" id="program_form" method="POST">
                     <div class="mb-3">
                         <label for="Register_Type" class="form-label">Seleccione el tipo de registro</label>
                         <select id="Register_Type" name="Register_Type" class="form-select" required>
                             <option value="" disabled selected>Seleccionar</option>
-                            <option value="section1">Tipo de Estudio</option>
+                            <option value="section1">Programa de Educación Permanente</option>
                             <option value="section2">Unidades Adscritas</option>
-                            <option value="section3">Número de Academia</option>
+                            <option value="section3">Organización Externa</option>
                             <option value="section4">Unidad Generadora de Recursos</option>
-                            <option value="section5">Asociados</option>
-                            <option value="section6">Responsable</option>
-                            <option value="section7">Responsable a Asociados</option>
+                            <option value="section5">Responsable</option>
                         </select>
                     </div>
 
                     <div id="section1" class="mb-4">
-                        <h3>Registrar Tipo de Estudio</h3>
+                        <h3>Registrar Programa de Educación Permanente</h3>
                         <div class="row">
                             <div class="column">
-                                <label for="Register_Study" class="form-label">Siglas</label>
-                                <input type="text" placeholder="Ingrese Siglas" class="form-control" id="Register_Study" name="Acronyms_Study">
+                                <label for="Register_Program" class="form-label">Siglas</label>
+                                <input type="text" placeholder="Ingrese Siglas" class="form-control" id="Register_Program" name="Acronyms_Program">
                             </div>
                             <div class="column">
-                                <label for="Register_Study" class="form-label">Nombre del Tipo de Estudio</label>
-                                <input type="text" placeholder="Ingrese Nombre" class="form-control" id="Register_Study" name="Study_Type">
+                                <label for="Register_Program" class="form-label">Nombre del Programa</label>
+                                <input type="text" placeholder="Ingrese Nombre" class="form-control" id="Register_Program" name="Program_Type">
                             </div>
                         </div>
                     </div>
@@ -175,153 +174,21 @@ if (!isset($_SESSION['Id_User'])) {
                     </div>
 
                     <div id="section3" class="mb-4">
-                        <h3>Registrar Academia</h3>
+                        <h3>Registrar Organización Externa</h3>
                         <div class="row">
                             <div class="column">
-                                <label for="Register_Academy" class="form-label">Número de Academia</label>
-                                <input type="text" placeholder="Ingrese Número" class="form-control" id="Register_Academy" name="Academy_Number">
+                                <label for="Register_Organization" class="form-label">Código</label>
+                                <input type="text" placeholder="Ingrese Número" class="form-control" id="Register_Organization" name="Organization_Number">
                             </div>
                             <div class="column">
-                                <label for="Register_Academy" class="form-label">Nombre de la Academia</label>
-                                <input type="text" placeholder="Ingrese Nombre" class="form-control" id="Register_Academy" name="Academy_Name">
-                            </div>
-                        </div>
-                    </div>
-
-                    <div id="section4" class="mb-4">
-                        <h3>Registrar Unidad Generadora de Recursos</h3>
-                        <div class="row">
-                            <div class="column">
-                                <label for="Register_Resource" class="form-label">Siglas</label>
-                                <input type="text" placeholder="Ingrese Siglas" class="form-control" id="Register_Resource" name="Acronyms_Resource">
-                            </div>
-                            <div class="column">
-                                <label for="Register_Resource" class="form-label">Nombre de Unidad de Recursos</label>
-                                <input type="text" placeholder="Ingrese Nombre" class="form-control" id="Register_Resource" name="Resource_Name">
-                            </div>
-                        </div>
-                    </div>
-
-                    <div id="section5" class="mb-4">
-                        <h3>Registrar Asociados</h3>
-                        <div class="row">
-                            <div class="column">
-                                <label for="Register_Associate" class="form-label">Nombre de Asociado</label>
-                                <input type="text" placeholder="Ingrese Asociado" class="form-control" id="Register_Associate" name="Associate_Name">
-                            </div>
-                            <div class="column">
-                                <label for="Register_Associate" class="form-label">Observación</label>
-                                <input type="text" placeholder="Ingrese Nombre" class="form-control" id="Register_Associate" name="Associate_Comment">
-                            </div>
-                        </div>
-                    </div>
-
-                    <div id="section6" class="mb-4">
-                        <h3>Registrar Responsable</h3>
-                        <div class="row">
-                            <div class="column">
-                                <label for="Register_Responsible" class="form-label">Tipo de Documento</label>
-                                <select id="Register_Responsible" name="Document_Type" class="form-select">
-                                    <option value="" disabled selected>Seleccione un tipo de documento</option>
-                                    <option value="V-">Venezolano</option>
-                                    <option value="J-">Persona Jurídica</option>
-                                    <option value="P-">Pasaporte</option>
-                                    <option value="E-">Extranjero</option>
-                                </select>
-                            </div>
-                            <div class="column">
-                                <label for="Register_Responsible" class="form-label">Documento de Identidad</label>
-                                <input type="text" placeholder="Ingrese Documento de Identidad" class="form-control" id="Register_Responsible" name="Identification_Document">
+                                <label for="Register_Organization" class="form-label">Nombre</label>
+                                <input type="text" placeholder="Ingrese Nombre" class="form-control" id="Register_Organization" name="Organization_Name">
                             </div>
                         </div>
                         <div class="row">
                             <div class="column">
-                                <label for="Register_Responsible" class="form-label">Fecha de Nacimiento</label>
-                                <input type="date" placeholder="Fecha de Nacimiento" class="form-control" id="Register_Responsible" name="Date_Birth">
-                            </div>
-                            <div class="column">
-                                <label for="Register_Responsible" class="form-label">Primer Nombre</label>
-                                <input type="text" placeholder="Ingrese Primer Nombre" class="form-control" id="Register_Responsible" name="First_Name" oninput="lettersOnly(this)">
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="column">
-                                <label for="Register_Responsible" class="form-label">Segundo Nombre</label>
-                                <input type="text" placeholder="Ingrese Segundo Nombre" class="form-control" id="Register_Responsible" name="Second_Name" oninput="lettersOnly(this)">
-                            </div>
-                            <div class="column">
-                                <label for="Register_Responsible" class="form-label">Primer Apellido</label>
-                                <input type="text" placeholder="Ingrese Primer Apellido" class="form-control" id="Register_Responsible" name="First_LastName" oninput="lettersOnly(this)">
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="column">
-                                <label for="Register_Responsible" class="form-label">Segundo Apellido</label>
-                                <input type="text" placeholder="Ingrese Segundo Apellido" class="form-control" id="Register_Responsible" name="Second_LastName" oninput="lettersOnly(this)">
-                            </div>
-                            <div class="column">
-                                <label for="Register_Responsible" class="form-label">Número de Teléfono</label>
-                                <input type="text" placeholder="Ingrese Número de Teléfono" class="form-control" id="Register_Responsible" name="Phone_Number" oninput="numbersOnly(this)">
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="column">
-                                <label for="Register_Responsible" class="form-label">Correo Electrónico</label>
-                                <input type="email" placeholder="Ingrese Correo" class="form-control" id="Register_Responsible" name="Email" onblur="validateEmail(this)">
-                            </div>
-
-
-                            <div class="column">
-                                <label for="Register_Responsible" class="form-label">Género</label>
-                                <select id="Register_Responsible" name="Gender" class="form-select">
-                                    <option value="" disabled selected>Seleccione Género</option>
-                                    <option value="Female">Femenino</option>
-                                    <option value="Male">Masculino</option>
-                                    <option value="Other">Otro</option>
-                                </select>
-
-                            </div>
-
-                            <div class="row">
-                                <div class="column">
-                                    <label for="Register_Responsible" class="form-label">Observación</label>
-                                    <input type="text" placeholder="Ingrese Observación" class="form-control" id="Register_Responsible" name="Comment_Responsible">
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-
-                    <div id="section7" class="mb-4">
-                        <h3>Responsable a Asociados</h3>
-                        <div class="row">
-                            <div class="column">
-                                <label for="Associate" class="form-label">Nombre de Asociado</label>
-                                <select class="form-select" id="Associate" name="Associate">
-                                    <option value="" disabled selected>Seleccione un asociado</option>
-                                    <!-- The options will be filled in dynamically  -->
-                                    <?php
-                                    $asociados_query = "SELECT Id_Associate, Associate_Name, Status FROM associates WHERE Status='Active'";
-                                    $getAsociados = mysqli_query($Connection, $asociados_query);
-
-                                    if ($getAsociados) {
-                                        while ($row = mysqli_fetch_assoc($getAsociados)) {
-                                            $Id_Associate = $row['Id_Associate'];
-                                            $Associate_Name = $row['Associate_Name'];
-                                    ?>
-                                            <option value="<?php echo $Id_Associate; ?>"><?php echo $Associate_Name; ?></option>
-                                    <?php
-                                        }
-                                        mysqli_free_result($getAsociados);
-                                    } else {
-                                        echo "Error al obtener los asociados: " . mysqli_error($Connection);
-                                    }
-                                    ?>
-                                </select>
-                            </div>
-                            <div class="column">
-                                <label for="Responsible" class="form-label">Nombre del Responsable</label>
-                                <select class="form-select" id="Responsible" name="Responsible">
+                                <label for="Register_Organization" class="form-label">Responsable</label>
+                                <select class="form-select" id="Id_Responsible" name="Id_Responsible">
                                     <option value="" disabled selected>Seleccione un responsable</option>
                                     <!-- The options will be filled in dynamically  -->
                                     <?php
@@ -344,7 +211,128 @@ if (!isset($_SESSION['Id_User'])) {
                                 </select>
                             </div>
                         </div>
+
                     </div>
+
+                    <div id="section4" class="mb-4">
+                        <h3>Registrar Unidad Generadora de Recursos</h3>
+                        <div class="row">
+                            <div class="column">
+                                <label for="Register_Resource" class="form-label">Siglas</label>
+                                <select id="Register_Resource" name="Acronyms_Resource" class="form-select">
+                                    <option value="" disabled selected>Seleccione tipo de unidad de recusos</option>
+                                    <option value="UGR">UGR-Unidad Generadora de Recursos</option>
+                                    <option value="NGR">NGR-Unidad No Generadora de Recursos</option>
+                                </select>
+
+                            </div>
+                            <div class="column">
+                                <label for="Register_Resource" class="form-label">Nombre</label>
+                                <input type="text" placeholder="Ingrese Nombre" class="form-control" id="Register_Resource" name="Resource_Name">
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="column">
+                                <label for="Register_Resource" class="form-label">Fecha de aprobación</label>
+                                <input type="date" placeholder="Fecha de Aprobación" class="form-control" id="Register_Resource" name="Approval_Date">
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                    <div id="section5" class="mb-4">
+                        <h3>Registrar Responsable</h3>
+                        <div class="row">
+                            <div class="column">
+                                <label for="Register_Responsible" class="form-label">Tipo de Documento</label>
+                                <select id="Register_Responsible" name="Document_Type" class="form-select">
+                                    <option value="" disabled selected>Seleccione un tipo de documento</option>
+                                    <option value="V-">Venezolano</option>
+                                    <option value="J-">Persona Jurídica</option>
+                                    <option value="P-">Pasaporte</option>
+                                    <option value="E-">Extranjero</option>
+                                </select>
+                            </div>
+                            <div class="column">
+                                <label for="Register_Responsible" class="form-label">Documento de Identidad</label>
+                                <input type="text" placeholder="Ingrese Documento de Identidad" class="form-control" id="Register_Responsible" name="Identification_Document">
+                            </div>
+                        </div>
+                        <div class="row">
+
+                            <div class="column">
+                                <label for="Register_Responsible" class="form-label">Primer Nombre</label>
+                                <input type="text" placeholder="Ingrese Primer Nombre" class="form-control" id="Register_Responsible" name="First_Name" oninput="lettersOnly(this)">
+                            </div>
+
+                            <div class="column">
+                                <label for="Register_Responsible" class="form-label">Segundo Nombre</label>
+                                <input type="text" placeholder="Ingrese Segundo Nombre" class="form-control" id="Register_Responsible" name="Second_Name" oninput="lettersOnly(this)">
+                            </div>
+
+
+
+                        </div>
+                        <div class="row">
+
+                            <div class="column">
+                                <label for="Register_Responsible" class="form-label">Primer Apellido</label>
+                                <input type="text" placeholder="Ingrese Primer Apellido" class="form-control" id="Register_Responsible" name="First_LastName" oninput="lettersOnly(this)">
+                            </div>
+                            <div class="column">
+                                <label for="Register_Responsible" class="form-label">Segundo Apellido</label>
+                                <input type="text" placeholder="Ingrese Segundo Apellido" class="form-control" id="Register_Responsible" name="Second_LastName" oninput="lettersOnly(this)">
+                            </div>
+                        </div>
+                        <div class="row">
+
+                            <div class="column">
+                                <label for="Register_Responsible" class="form-label">Número de Teléfono</label>
+                                <input type="text" placeholder="Ingrese Número de Teléfono" class="form-control" id="Register_Responsible" name="Phone_Number" oninput="numbersOnly(this)">
+                            </div>
+
+                            <div class="column">
+                                <label for="Register_Responsible" class="form-label">Correo Electrónico</label>
+                                <input type="email" placeholder="Ingrese Correo" class="form-control" id="Register_Responsible" name="Email" onblur="validateEmail(this)">
+                            </div>
+                        </div>
+                        <div class="row">
+
+                            <div class="column">
+                                <label for="Register_Responsible" class="form-label">Género</label>
+                                <select id="Register_Responsible" name="Gender" class="form-select">
+                                    <option value="" disabled selected>Seleccione Género</option>
+                                    <option value="Female">Femenino</option>
+                                    <option value="Male">Masculino</option>
+                                    <option value="Other">Otro</option>
+                                </select>
+
+                            </div>
+
+                            <div class="column">
+                                <label for="Register_Responsible" class="form-label">Tipo de responsable</label>
+                                <input type="text" placeholder="Ingrese el tipo de responsable" class="form-control" id="Type_Responsible" name="Type_Responsible">
+                            </div>
+                        </div>
+
+                        <div class="row">
+
+                            <div class="column">
+                                <label for="Register_Responsible" class="form-label">Estado de responsable</label>
+                                <input type="text" placeholder="Ingrese Observación" class="form-control" id="Status_Responsible" name="Status_Responsible">
+                            </div>
+
+                            <div class="column">
+                                <label for="Register_Responsible" class="form-label">Observación</label>
+                                <input type="text" placeholder="Ingrese Observación" class="form-control" id="Register_Responsible" name="Comment_Responsible">
+                            </div>
+
+                        </div>
+
+                    </div>
+
                     <div class="button-container">
                         <button type="button" class="btn btn-primary save-changes-gg" data-bs-toggle="modal" data-bs-target="#SaveData">Guardar</button>
                     </div>
@@ -375,7 +363,7 @@ if (!isset($_SESSION['Id_User'])) {
     <!-- Include external scripts -->
     <script src="../JS/Sidebar.js"></script>
     <script src="../JS/Confirmation.js"></script>
-    <script src="../JS/Academic_Data.js"></script>
+    <script src="../JS/Program_Data.js"></script>
     <script src="../JS/Validation.js"></script>
     <script src="../bootstrap/js/jquery.min.js"></script>
     <script src="../bootstrap/js/bootstrap.min.js"></script>
@@ -416,6 +404,12 @@ if (!isset($_SESSION['Id_User'])) {
                 switch (error) {
                     case 'Datos_Vacios':
                         message = 'Por favor, complete todos los campos.';
+                        break;
+                    case 'acronimo_existe':
+                        message = 'Las siglas ya existen para otro programa.';
+                        break;
+                    case 'documento_existe':
+                        message = 'El documento de identificación ya existen para otro reponsable.';
                         break;
                     default:
                         message = 'Mensaje de Error';

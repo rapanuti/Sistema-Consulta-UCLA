@@ -19,7 +19,7 @@ main {
     position: relative;
     max-width: 100%;
     width: 100%;
-    border-radius: 6px;
+    border-radius: 5px;
     padding: 30px;
     margin: 0 auto;
     background-color: #ffffff;
@@ -29,8 +29,8 @@ main {
 .container h2 {
     position: relative;
     font-size: 30px;
-    font-weight: 600;
-    color: #012460;
+    font-weight: 500;
+    color: #012450;
     margin-top: 20px;
     margin-bottom: 40px;
 }
@@ -39,11 +39,21 @@ main {
     content: "";
     position: absolute;
     left: 0;
-    right: 80%;
+    right: 50%;
     bottom: -5px;
     height: 2px;
     border-radius: 8px;
-    background-color: #012460;
+    background-color: #012450;
+}
+
+.container h3 {
+    display: block;
+    margin: 30px 0 20px;
+    font-size: 25px;
+    font-weight: 500;
+    color: #012450;
+    text-align: center;
+    padding: 5px 0;
 }
 
 .container .form-label,
@@ -55,10 +65,49 @@ main {
     margin-bottom: 5px;
 }
 
+.container form input[type="date"] {
+    color: #707070;
+}
+
+.container form input[type="date"]:valid {
+    color: #333;
+}
+
 .container form input,
 .container form select,
 .container select {
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+
+.modal-footer .btn-primary,
+.modal-footer .btn-secondary {
+    height: 35px;
+    max-width: 150px;
+    width: 35%;
+    border: none;
+    outline: none;
+    border-radius: 5px;
+    transition: all 0.3s linear;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: 400;
+    padding: 5px 15px;
+}
+
+.modal-footer .btn-primary {
+    background-color: #012450;
+    color: #ffffff;
+}
+
+.modal-footer .btn-danger {
+    background-color: #7c000c;
+    color: #ffffff;
+}
+
+.modal-footer .btn-secondary {
+    background-color: #b1b1b1;
+    color: #000000;
 }
 
 #data-table {
@@ -83,8 +132,9 @@ main {
     width: 150% !important;
 }
 
+
 .table-striped>thead>tr>th {
-    background-color: #012460;
+    background-color: #012450;
     color: #ffffff;
     border: 1px solid #e5e5e5;
     text-align: center;
@@ -102,153 +152,111 @@ main {
     border: 1px solid #d2d2d2;
 }
 
-.view-btn,
+.mb-4 .view-btn,
 .edit-btn {
     border: none;
     cursor: pointer;
     color: white;
 }
 
-.view-btn {
+.mb-4 .view-btn {
     background-color: #0041b2;
 }
 
-.edit-btn {
+.mb-4 .edit-btn {
     background-color: #c50014;
 }
 
 
-.view-btn:hover {
-    background-color: #012460;
+.mb-4 .view-btn:hover {
+    background-color: #012450;
 }
 
-.edit-btn:hover {
+.mb-4 .edit-btn:hover {
     background-color: #87000e;
 }
 
-.modal-footer .btn-primary,
-.modal-footer .btn-secondary {
-    height: 35px;
-    max-width: 150px;
-    width: 35%;
-    border: none;
-    outline: none;
-    border-radius: 5px;
-    transition: all 0.3s linear;
-    cursor: pointer;
-    font-size: 15px;
-    font-weight: 400;
-    padding: 5px 15px;
-}
 
-.modal-footer .btn-primary {
-    background-color: #012460;
-    color: #ffffff;
-}
-
-.modal-footer .btn-danger {
-    background-color: #7c000c;
-    color: #ffffff;
-}
-
-.modal-footer .btn-secondary {
-    background-color: #b1b1b1;
-    color: #000000;
-}
 
 .modal-dialog h5 {
     position: relative;
     font-size: 25px;
     font-weight: 700;
-    color: #012460;
+    color: #012450;
 }
 
 .table1 th:nth-child(1),
 .table1 th:nth-child(4),
-.table1 th:nth-child(5),
-.table1 th:nth-child(6),
-.table1 th:nth-child(7),
-.table1 th:nth-child(8),
-.table1 th:nth-child(9),
-.table1 th:nth-child(10),
-.table1 th:nth-child(11),
-.table1 th:nth-child(12),
-.table1 th:nth-child(13),
-.table1 th:nth-child(14),
-.table1 th:nth-child(15),
-.table1 th:nth-child(16),
-.table1 th:nth-child(17),
-.table1 td:nth-child(18),
-.table1 td:nth-child(19),
-
 .table1 td:nth-child(1),
-.table1 td:nth-child(4),
-.table1 td:nth-child(5),
-.table1 td:nth-child(6),
-.table1 td:nth-child(7),
-.table1 td:nth-child(8),
-.table1 td:nth-child(9),
-.table1 td:nth-child(10),
-.table1 td:nth-child(11),
-.table1 td:nth-child(12),
-.table1 td:nth-child(13),
-.table1 td:nth-child(14),
-.table1 td:nth-child(15),
-.table1 td:nth-child(16),
-.table1 td:nth-child(17),
-.table1 td:nth-child(18),
-.table1 td:nth-child(19) {
+.table1 td:nth-child(4) {
     display: none !important;
 }
 
 .table2 th:nth-child(1),
-.table2 th:nth-child(2),
-.table2 th:nth-child(3),
-.table2 th:nth-child(5),
-.table2 th:nth-child(6),
-.table2 th:nth-child(7),
-.table2 th:nth-child(8),
-.table2 th:nth-child(11),
-.table2 th:nth-child(12),
-.table2 th:nth-child(13),
-.table2 th:nth-child(14),
-.table2 th:nth-child(15),
-.table2 th:nth-child(16),
-.table2 th:nth-child(17),
-.table2 th:nth-child(18),
-.table2 th:nth-child(19),
-.table2 th:nth-child(20),
-.table2 th:nth-child(21),
-.table2 th:nth-child(22),
-.table2 th:nth-child(23),
-.table2 th:nth-child(24),
-
+.table2 th:nth-child(4),
 .table2 td:nth-child(1),
-.table2 td:nth-child(2),
-.table2 td:nth-child(3),
-.table2 td:nth-child(5),
-.table2 td:nth-child(6),
-.table2 td:nth-child(7),
-.table2 td:nth-child(8),
-.table2 td:nth-child(11),
-.table2 td:nth-child(12),
-.table2 td:nth-child(13),
-.table2 td:nth-child(14),
-.table2 td:nth-child(15),
-.table2 td:nth-child(16),
-.table2 td:nth-child(17),
-.table2 td:nth-child(18),
-.table2 td:nth-child(19),
-.table2 td:nth-child(20),
-.table2 td:nth-child(21),
-.table2 td:nth-child(22),
-.table2 td:nth-child(23),
-.table2 td:nth-child(24) {
+.table2 td:nth-child(4) {
+    display: none !important;
+}
+
+.table3 th:nth-child(1),
+.table3 th:nth-child(4),
+.table3 th:nth-child(5),
+.table3 td:nth-child(1),
+.table3 td:nth-child(4),
+.table3 td:nth-child(5) {
+    display: none !important;
+}
+
+.table4 th:nth-child(1),
+.table4 th:nth-child(4),
+.table4 th:nth-child(5),
+.table4 td:nth-child(1),
+.table4 td:nth-child(4),
+.table4 td:nth-child(5) {
+    display: none !important;
+}
+
+.table5 th:nth-child(1),
+.table5 th:nth-child(2),
+.table5 th:nth-child(3),
+.table5 th:nth-child(5),
+.table5 th:nth-child(6),
+.table5 th:nth-child(7),
+.table5 th:nth-child(8),
+.table5 th:nth-child(10),
+.table5 th:nth-child(11),
+.table5 th:nth-child(12),
+.table5 th:nth-child(13),
+.table5 th:nth-child(14),
+.table5 th:nth-child(15),
+.table5 th:nth-child(16),
+
+.table5 td:nth-child(1),
+.table5 td:nth-child(2),
+.table5 td:nth-child(3),
+.table5 td:nth-child(5),
+.table5 td:nth-child(6),
+.table5 td:nth-child(7),
+.table5 td:nth-child(8),
+.table5 td:nth-child(10), 
+.table5 td:nth-child(11),
+.table5 td:nth-child(12), 
+.table5 td:nth-child(13),
+.table5 td:nth-child(14),
+.table5 td:nth-child(15),
+.table5 td:nth-child(16){
     display: none !important;
 }
 
 
+
 @media (max-width: 750px) {
+    .container {
+        max-width: 50%;
+        width: 50%;
+    }
+
     .custom-input {
         width: 100% !important;
     }
@@ -271,3 +279,11 @@ main {
     }
 }
 
+#section1,
+#section2,
+#section3,
+#section4,
+#section5 {
+
+    display: none;
+}

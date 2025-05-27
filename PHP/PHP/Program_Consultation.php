@@ -1,9 +1,9 @@
 <?php
-// Initialize the session, include database connection settings, require study consultation config, and check user authentication
+// Initialize the session, include database connection settings, require program consultation config, and check user authentication
 session_start();
 include_once('../Configuration/Connection_DB.php');
 
-require '../Configuration/Academic_Consultation.php';
+require '../Configuration/Program_Consultation.php';
 
 if (!isset($_SESSION['Id_User'])) {
     header("Location:../Login.php?error=error_acceso");
@@ -17,16 +17,16 @@ if (!isset($_SESSION['Id_User'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Consultar Datos Académicos</title>
+    <title>Consultar Datos de Programa</title>
 
     <!-- External stylesheet links -->
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.24/b-2.2.3/r-2.2.7/sp-1.2.2/sl-1.0.1/datatables.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.24/b-2.2.3/r-2.2.7/sp-1.2.2/sl-1.0.1/datatables.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
     <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
     <link rel="stylesheet" href="../CSS/Sidebar.css">
-    <link rel="stylesheet" href="../CSS/Academic_Consultation.css">
+    <link rel="stylesheet" href="../CSS/Program_Consultation.css">
     <link rel="icon" href="../images/favicon-16x16.png" type="image/x-icon">
 
 </head>
@@ -85,16 +85,17 @@ if (!isset($_SESSION['Id_User'])) {
                         <div class="nav_dropdown">
                             <a href="#" class="nav_link">
                                 <i class="bx bx-book-bookmark nav_icon" style="color: #012460;"></i>
-                                <span class="nav_name">Estudios</span>
+                                <span class="nav_name">Programas</span>
                                 <i class="bx bx-chevron-down nav_dropdown-icon" style="color: #012460;"></i>
                             </a>
 
                             <div class="nav_dropdown-collapse">
                                 <div class="nav_dropdown-content">
-                                    <a href="Academic_Data.php" class="nav_dropdown-item">Registrar Datos Académicos</a>
-                                    <a href="Academic_Consultation.php" class="nav_dropdown-item">Consultar Datos Académicos</a>
-                                    <a href="Register_Study.php" class="nav_dropdown-item">Registrar Tipo de Estudios</a>
-                                    <a href="Study_Information.php" class="nav_dropdown-item">Consultar Estudios</a>
+                                    <a href="Program_Data.php" class="nav_dropdown-item">Registrar Datos de Programa</a>
+                                    <a href="Program_Consultation.php" class="nav_dropdown-item">Consultar Datos de Programa</a>
+                                    <a href="Register_Program.php" class="nav_dropdown-item">Registrar Programa de Educación Permanente</a>
+                                    <a href="Register_Cohort.php" class="nav_dropdown-item">Registrar Cohorte</a>
+                                    <a href="Program_Information.php" class="nav_dropdown-item">Consultar Programas</a>
                                 </div>
                             </div>
                         </div>
@@ -131,32 +132,30 @@ if (!isset($_SESSION['Id_User'])) {
     <main>
         <section>
             <div class="container mt-5">
-                <h2 class="mb-4">Consultar Datos Académicos</h2>
+                <h2 class="mb-4">Consultar Datos de Programa</h2>
 
                 <div class="mb-3">
                     <label for="Consult_Data" class="form-label">Seleccione el tipo de consulta</label>
                     <select id="Consult_Data" name="Consult_Data" class="form-select" required>
                         <option value="" disabled selected>Seleccionar</option>
-                        <option value="section1">Tipo de Estudio</option>
+                        <option value="section1">Programa de Educación Permanente</option>
                         <option value="section2">Unidades Adscritas</option>
-                        <option value="section3">Número de Academia</option>
+                        <option value="section3">Organización Externa</option>
                         <option value="section4">Unidad Generadora de Recursos</option>
-                        <option value="section5">Asociados</option>
-                        <option value="section6">Responsable</option>
-                        <option value="section7">Asociados Responsables</option>
+                        <option value="section5">Responsable</option>
                     </select>
                 </div>
 
                 <div id="section1" class="mb-4">
-                    <h3>Consultar Tipos de Estudios</h3>
+                    <h3>Consultar Programa de Educación Permanente</h3>
                     <div class="table-responsive">
                         <table id="data-table" class="table table-striped data-table table1">
                             <thead>
                                 <tr>
                                     <!-- Table headers -->
                                     <th> </th>
-                                    <th>SIGLAS DE ESTUDIO</th>
-                                    <th>NOMBRE DE ESTUDIO</th>
+                                    <th>SIGLAS DE PROGRAMA</th>
+                                    <th>NOMBRE DE PROGRAMA</th>
                                     <th> </th>
                                     <th>ACCIÓN</th>
                                 </tr>
@@ -164,16 +163,16 @@ if (!isset($_SESSION['Id_User'])) {
                             <tbody>
                                 <?php
                                 // Display data from database
-                                if ($ResultStudyType !== false && $ResultStudyType->num_rows > 0) {
-                                    while ($Row = mysqli_fetch_assoc($ResultStudyType)) {
+                                if ($ResultProgramType !== false && $ResultProgramType->num_rows > 0) {
+                                    while ($Row = mysqli_fetch_assoc($ResultProgramType)) {
                                         echo "<tr>";
-                                        echo "<td>" . htmlspecialchars($Row["Id_Study_Types"]) . "</td>";
-                                        echo "<td>" . htmlspecialchars($Row["Acronyms_Study"]) . "</td>";
-                                        echo "<td>" . htmlspecialchars($Row["Study_Type"]) . "</td>";
+                                        echo "<td>" . htmlspecialchars($Row["Id_Program_Types"]) . "</td>";
+                                        echo "<td>" . htmlspecialchars($Row["Acronyms_Program"]) . "</td>";
+                                        echo "<td>" . htmlspecialchars($Row["Program_Type"]) . "</td>";
                                         echo "<td>" . htmlspecialchars($Row["Date"]) . "</td>";
                                         echo "<td>";
-                                        echo "<button class='btn btn-sm btn-primary view-btn' data-bs-toggle='modal' data-bs-target='#studyTypeModal'><i class='bx bx-show-alt'></i></button> ";
-                                        echo "<button class='btn btn-sm btn-secondary edit-btn' data-bs-toggle='modal' data-bs-target='#studyTypeModal'><i class='bx bx-edit'></i></button> ";
+                                        echo "<button class='btn btn-sm btn-primary view-btn' data-bs-toggle='modal' data-bs-target='#programTypeModal'><i class='bx bx-show-alt'></i></button> ";
+                                        echo "<button class='btn btn-sm btn-secondary edit-btn' data-bs-toggle='modal' data-bs-target='#programTypeModal'><i class='bx bx-edit'></i></button> ";
                                         echo "</td>";
                                         echo "</tr>";
                                     }
@@ -184,28 +183,28 @@ if (!isset($_SESSION['Id_User'])) {
                     </div>
                 </div>
 
-                <form id="studyTypeForm" action="../Configuration/Process_Academic_Data.php" method="POST">
-                    <div class="modal fade" id="studyTypeModal" tabindex="-1" aria-labelledby="studyTypeModalLabel" aria-hidden="true">
+                <form id="programTypeForm" action="../Configuration/Process_Program_Data.php" method="POST">
+                    <div class="modal fade" id="programTypeModal" tabindex="-1" aria-labelledby="programTypeModalLabel" aria-hidden="true">
                         <div class="modal-dialog  modal-dialog-centered">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="studyTypeModalLabel">Detalles del Tipo de Estudio</h5>
+                                    <h5 class="modal-title" id="programTypeModalLabel">Detalles del Programa de Educación Permanente</h5>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
 
                                 <div class="modal-body">
-                                    <input type="hidden" id="Id_Study_Types" name="Id_Study_Types">
+                                    <input type="hidden" id="Id_Program_Types" name="Id_Program_Types">
                                     <div class="mb-3">
-                                        <label for="Acronyms_Study" class="form-label">Siglas del Tipo de Estudio</label>
-                                        <input type="text" class="form-control" id="Acronyms_Study" name="Acronyms_Study">
+                                        <label for="Acronyms_Program" class="form-label">Siglas del Programa de Educación Permanente</label>
+                                        <input type="text" class="form-control" id="Acronyms_Program" name="Acronyms_Program">
                                     </div>
                                     <div class="mb-3">
-                                        <label for="Study_Type" class="form-label">Nombre del Tipo de Estudio</label>
-                                        <input type="text" class="form-control" id="Study_Type" name="Study_Type">
+                                        <label for="Program_Type" class="form-label">Nombre del Programa de Educación Permanente</label>
+                                        <input type="text" class="form-control" id="Program_Type" name="Program_Type">
                                     </div>
                                     <div class="mb-3">
                                         <label for="Date" class="form-label">Fecha de Registro</label>
-                                        <input type="date" class="form-control" id="Date_Study" name="Date_Study" readonly>
+                                        <input type="date" class="form-control" id="Date_Program" name="Date_Program" readonly>
                                     </div>
                                 </div>
                                 <div class="modal-footer">
@@ -291,7 +290,7 @@ if (!isset($_SESSION['Id_User'])) {
                         </table>
                     </div>
                 </div>
-                <form id="unitForm" action="../Configuration/Process_Academic_Data.php" method="POST">
+                <form id="unitForm" action="../Configuration/Process_Program_Data.php" method="POST">
                     <div class="modal fade" id="unitModal" tabindex="-1" aria-labelledby="unitModalLabel" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered">
                             <div class="modal-content">
@@ -363,15 +362,16 @@ if (!isset($_SESSION['Id_User'])) {
                 </form>
 
                 <div id="section3" class="mb-4">
-                    <h3>Consultar Academia</h3>
+                    <h3>Consultar Organización Externa</h3>
                     <div class="table-responsive">
                         <table id="data-table" class="table table-striped data-table table3">
                             <thead>
                                 <tr>
                                     <!-- Table headers -->
                                     <th>ID</th>
-                                    <th>NÚMERO DE ACADEMIA</th>
-                                    <th>NOMBRE DE ACADEMIA</th>
+                                    <th>NÚMERO DE ORGANIZACIÓN EXTERNA</th>
+                                    <th>NOMBRE DE ORGANIZACIÓN EXTERNA</th>
+                                    <th>ID RESPONSABLE</th>
                                     <th>FECHA</th>
                                     <th>ACCIÓN</th>
                                 </tr>
@@ -379,16 +379,17 @@ if (!isset($_SESSION['Id_User'])) {
                             <tbody>
                                 <?php
                                 // Display data from database
-                                if ($ResultAcademy !== false && $ResultAcademy->num_rows > 0) {
-                                    while ($Row = mysqli_fetch_assoc($ResultAcademy)) {
+                                if ($ResultOrganization !== false && $ResultOrganization->num_rows > 0) {
+                                    while ($Row = mysqli_fetch_assoc($ResultOrganization)) {
                                         echo "<tr>";
-                                        echo "<td>" . htmlspecialchars($Row["Id_Academy"]) . "</td>";
-                                        echo "<td>" . htmlspecialchars($Row["Academy_Number"]) . "</td>";
-                                        echo "<td>" . htmlspecialchars($Row["Academy_Name"]) . "</td>";
+                                        echo "<td>" . htmlspecialchars($Row["Id_Organization"]) . "</td>";
+                                        echo "<td>" . htmlspecialchars($Row["Organization_Number"]) . "</td>";
+                                        echo "<td>" . htmlspecialchars($Row["Organization_Name"]) . "</td>";
+                                        echo "<td>" . htmlspecialchars($Row["Id_Responsible"]) . "</td>";
                                         echo "<td>" . htmlspecialchars($Row["Date"]) . "</td>";
                                         echo "<td>";
-                                        echo "<button class='btn btn-sm btn-primary view-btn' data-bs-toggle='modal' data-bs-target='#academyModal'><i class='bx bx-show-alt'></i></button> ";
-                                        echo "<button class='btn btn-sm btn-secondary edit-btn' data-bs-toggle='modal' data-bs-target='#academyModal'><i class='bx bx-edit'></i></button> ";
+                                        echo "<button class='btn btn-sm btn-primary view-btn' data-bs-toggle='modal' data-bs-target='#organizationModal'><i class='bx bx-show-alt'></i></button> ";
+                                        echo "<button class='btn btn-sm btn-secondary edit-btn' data-bs-toggle='modal' data-bs-target='#organizationModal'><i class='bx bx-edit'></i></button> ";
                                         echo "</td>";
                                         echo "</tr>";
                                     }
@@ -399,28 +400,56 @@ if (!isset($_SESSION['Id_User'])) {
                     </div>
                 </div>
 
-                <form id="academyForm" action="../Configuration/Process_Academic_Data.php" method="POST">
-                    <div class="modal fade" id="academyModal" tabindex="-1" aria-labelledby="academyModalLabel" aria-hidden="true">
+                <form id="organizationForm" action="../Configuration/Process_Program_Data.php" method="POST">
+                    <div class="modal fade" id="organizationModal" tabindex="-1" aria-labelledby="organizationModalLabel" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="academyModalLabel">Detalles de la Academia</h5>
+                                    <h5 class="modal-title" id="organizationModalLabel">Detalles de la Organización Externa</h5>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
-                                    <input type="hidden" id="Id_Academy" name="Id_Academy">
+                                    <input type="hidden" id="Id_Organization" name="Id_Organization">
 
                                     <div class="mb-3">
-                                        <label for="Academy_Number" class="form-label">Número de Academia</label>
-                                        <input type="text" class="form-control" id="Academy_Number" name="Academy_Number">
+                                        <label for="Organization_Number" class="form-label">Código de Organización Externa</label>
+                                        <input type="text" class="form-control" id="Organization_Number" name="Organization_Number">
                                     </div>
                                     <div class="mb-3">
-                                        <label for="Academy_Name" class="form-label">Nombre de la Academia</label>
-                                        <input type="text" class="form-control" id="Academy_Name" name="Academy_Name">
+                                        <label for="Organization_Name" class="form-label">Nombre de Organización Externa</label>
+                                        <input type="text" class="form-control" id="Organization_Name" name="Organization_Name">
                                     </div>
+
                                     <div class="mb-3">
-                                        <label for="Academy_Date" class="form-label">Fecha de Registro</label>
-                                        <input type="date" class="form-control" id="Academy_Date" name="Academy_Date" readonly>
+                                        <label for="Responsible_Id" class="form-label">Nombre de Responsable</label>
+                                        <select id="Responsible_Id" name="Responsible_Id" class="form-select select-id">
+                                            <option value="" disabled selected>Seleccione un Responsable</option>
+                                            <!-- The options will be filled in dynamically  -->
+                                            <?php
+                                            $responsibles_query = "SELECT Id_Responsible, First_Name, First_LastName, Status FROM responsibles WHERE Status='Active'";
+                                            $getResponsibles = mysqli_query($Connection, $responsibles_query);
+
+                                            if ($getResponsibles) {
+                                                while ($row = mysqli_fetch_assoc($getResponsibles)) {
+                                                    $Id_Responsible = $row['Id_Responsible'];
+                                                    $FullName = $row['First_Name'] . ' ' . $row['First_LastName'];
+                                            ?>
+                                                    <option value="<?php echo $Id_Responsible; ?>"><?php echo $FullName; ?></option>
+                                            <?php
+                                                }
+                                                mysqli_free_result($getResponsibles);
+                                            } else {
+                                                echo "Error al obtener los responsables: " . mysqli_error($Connection);
+                                            }
+                                            ?>
+                                        </select>
+                                        <input type="text" class="form-control input-id" id="Responsible" name="Responsible" value="<?php echo htmlspecialchars($FullName); ?>">
+                                    </div>
+
+
+                                    <div class="mb-3">
+                                        <label for="Organization_Date" class="form-label">Fecha de Registro</label>
+                                        <input type="date" class="form-control" id="Organization_Date" name="Organization_Date" readonly>
                                     </div>
 
                                 </div>
@@ -481,8 +510,9 @@ if (!isset($_SESSION['Id_User'])) {
                                 <tr>
                                     <!-- Table headers -->
                                     <th> </th>
-                                    <th>SIGLAS DE UNIDAD DE RECURSO</th>
-                                    <th>NOMBRE DE UNIDAD DE RECURSO</th>
+                                    <th>SIGLAS DE UNIDAD GENERADORA DE RECURSO</th>
+                                    <th>NOMBRE DE UNIDAD GENERADORA DE RECURSO</th>
+                                    <th> </th>
                                     <th> </th>
                                     <th>ACCIÓN</th>
                                 </tr>
@@ -496,6 +526,7 @@ if (!isset($_SESSION['Id_User'])) {
                                         echo "<td>" . htmlspecialchars($Row["Id_Resources"]) . "</td>";
                                         echo "<td>" . htmlspecialchars($Row["Acronyms_Resource"]) . "</td>";
                                         echo "<td>" . htmlspecialchars($Row["Resource_Name"]) . "</td>";
+                                        echo "<td>" . htmlspecialchars($Row["Approval_Date"]) . "</td>";
                                         echo "<td>" . htmlspecialchars($Row["Date"]) . "</td>";
                                         echo "<td>";
                                         echo "<button class='btn btn-sm btn-primary view-btn' data-bs-toggle='modal' data-bs-target='#resourceModal'><i class='bx bx-show-alt'></i></button> ";
@@ -510,12 +541,12 @@ if (!isset($_SESSION['Id_User'])) {
                     </div>
                 </div>
 
-                <form id="resourcesForm" action="../Configuration/Process_Academic_Data.php" method="POST">
+                <form id="resourcesForm" action="../Configuration/Process_Program_Data.php" method="POST">
                     <div class="modal fade" id="resourceModal" tabindex="-1" aria-labelledby="resourceModalLabel" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="resourceModalLabel">Detalles de la Unidad de Recursos</h5>
+                                    <h5 class="modal-title" id="resourceModalLabel">Detalles de la Unidad Generadora de Recursos</h5>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
@@ -523,12 +554,20 @@ if (!isset($_SESSION['Id_User'])) {
                                     <input type="hidden" id="Id_Resources" name="Id_Resources">
 
                                     <div class="mb-3">
-                                        <label for="Acronyms_Resource" class="form-label">Siglas de la Unidad de Recursos</label>
-                                        <input type="text" class="form-control" id="Acronyms_Resource" name="Acronyms_Resource">
+                                        <label for="Acronyms_Resource" class="form-label">Siglas de la Unidad Generadora de Recursos</label>
+                                        <select id="Acronyms_Resource" name="Acronyms_Resource" class="form-select">
+                                            <option value="" disabled selected>Seleccione tipo de unidad de recusos</option>
+                                            <option value="UGR">UGR-Unidad Generadora de Recursos</option>
+                                            <option value="NGR">NGR-Unidad No Generadora de Recursos</option>
+                                        </select>
                                     </div>
                                     <div class="mb-3">
-                                        <label for="Resource_Name" class="form-label">Nombre de la Unidad de Recursos</label>
+                                        <label for="Resource_Name" class="form-label">Nombre de la Unidad Generadora de Recursos</label>
                                         <input type="text" class="form-control" id="Resource_Name" name="Resource_Name">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="Approval_Date" class="form-label">Fecha de Aprobación</label>
+                                        <input type="date" class="form-control" id="Approval_Date" name="Approval_Date">
                                     </div>
                                     <div class="mb-3">
                                         <label for="Date_Resource" class="form-label">Fecha de Registro</label>
@@ -580,132 +619,22 @@ if (!isset($_SESSION['Id_User'])) {
                     </div>
                 </form>
 
-
                 <div id="section5" class="mb-4">
-                    <h3>Consultar Asociados</h3>
+                    <h3>Consultar Responsables</h3>
                     <div class="table-responsive">
                         <table id="data-table" class="table table-striped data-table table5">
                             <thead>
                                 <tr>
                                     <!-- Table headers -->
-                                    <th>ID</th>
-                                    <th>NOMBRE DE ASOCIADO</th>
-                                    <th>OBSERVACIÓN</th>
-                                    <th>FECHA</th>
-                                    <th>ACCIÓN</th>
-
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php
-                                // Display data from database
-                                if ($ResultAssociate !== false && $ResultAssociate->num_rows > 0) {
-                                    while ($Row = mysqli_fetch_assoc($ResultAssociate)) {
-                                        echo "<tr>";
-                                        echo "<td>" . htmlspecialchars($Row["Id_Associate"]) . "</td>";
-                                        echo "<td>" . htmlspecialchars($Row["Associate_Name"]) . "</td>";
-                                        echo "<td>" . htmlspecialchars($Row["Associate_Comment"]) . "</td>";
-                                        echo "<td>" . htmlspecialchars($Row["Date"]) . "</td>";
-                                        echo "<td>";
-                                        echo "<button class='btn btn-sm btn-primary view-btn' data-bs-toggle='modal' data-bs-target='#associateModal'><i class='bx bx-show-alt'></i></button> ";
-                                        echo "<button class='btn btn-sm btn-secondary edit-btn' data-bs-toggle='modal' data-bs-target='#associateModal'><i class='bx bx-edit'></i></button> ";
-                                        echo "</td>";
-                                        echo "</tr>";
-                                    }
-                                }
-                                ?>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
-                <form id="associateForm" action="../Configuration/Process_Academic_Data.php" method="POST">
-                    <div class="modal fade" id="associateModal" tabindex="-1" aria-labelledby="associateModalLabel" aria-hidden="true">
-                        <div class="modal-dialog modal-dialog-centered">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="associateModalLabel">Detalles del Asociado</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-
-                                    <input type="hidden" id="Id_Associate" name="Id_Associate">
-
-                                    <div class="mb-3">
-                                        <label for="Associate_Name" class="form-label">Nombre del Asociado</label>
-                                        <input type="text" class="form-control" id="Associate_Name" name="Associate_Name">
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="Associate_Comment" class="form-label">Observación</label>
-                                        <input type="text" class="form-control" id="Associate_Comment" name="Associate_Comment">
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="Associate_Date" class="form-label">Fecha de Registro</label>
-                                        <input type="date" class="form-control" id="Associate_Date" name="Associate_Date" readonly>
-                                    </div>
-
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-primary save-changes-as" data-bs-toggle="modal" data-bs-target="#SaveAs">Guardar Cambios</button>
-                                    <button type="button" class="btn btn-danger delete-btn-as" data-bs-toggle="modal" data-bs-target="#DeleteAs">Eliminar</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Save Modal -->
-                    <div class="modal fade" id="SaveAs" tabindex="-1" aria-labelledby="SaveAsLabel" aria-hidden="true">
-                        <div class="modal-dialog modal-dialog-centered">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="SaveAsLabel">Confirmar Guardado</h5>
-                                </div>
-                                <div class="modal-body">
-                                    ¿Desea guadar los cambios realizados?
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                                    <button type="submit" name="action_btn" value="action_edit" id="action_edit" data-action="action_edit" class="btn btn-primary">Confirmar</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Delete  Modal -->
-                    <div class="modal fade" id="DeleteAs" tabindex="-1" aria-labelledby="DeleteAsLabel" aria-hidden="true">
-                        <div class="modal-dialog modal-dialog-centered">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="DeleteAsLabel">Confirmar Eliminación</h5>
-                                </div>
-                                <div class="modal-body">
-                                    ¿Desea eliminar este registro?
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                                    <button type="submit" name="action_btn" value="action_delete" id="deleteBtn" data-action="action_delete" class="btn btn-primary">Confirmar</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </form>
-
-
-                <div id="section6" class="mb-4">
-                    <h3>Consultar Responsables</h3>
-                    <div class="table-responsive">
-                        <table id="data-table" class="table table-striped data-table table6">
-                            <thead>
-                                <tr>
-                                    <!-- Table headers -->
-                                    <th>ID</th>
                                     <th> </th>
                                     <th> </th>
                                     <th> </th>
                                     <th>IDENTIFICACIÓN</th>
                                     <th> </th>
-                                    <th>NOMBRE</th>
                                     <th> </th>
+                                    <th> </th>
+                                    <th> </th>
+                                    <th>NOMBRE</th>
                                     <th> </th>
                                     <th> </th>
                                     <th> </th>
@@ -726,7 +655,6 @@ if (!isset($_SESSION['Id_User'])) {
                                         echo "<td>" . htmlspecialchars($Row["Document_Type"]) . "</td>";
                                         echo "<td>" . htmlspecialchars($Row["Identification_Document"]) . "</td>";
                                         echo "<td>" . htmlspecialchars($Row["Document_Type"] . " " . $Row["Identification_Document"]) . "</td>";
-                                        echo "<td>" . htmlspecialchars($Row["Date_Birth"]) . "</td>";
                                         echo "<td>" . htmlspecialchars($Row["First_Name"]) . "</td>";
                                         echo "<td>" . htmlspecialchars($Row["Second_Name"]) . "</td>";
                                         echo "<td>" . htmlspecialchars($Row["First_LastName"]) . "</td>";
@@ -741,6 +669,8 @@ if (!isset($_SESSION['Id_User'])) {
                                         echo "<td>" . htmlspecialchars($Row["Phone_Number"]) . "</td>";
                                         echo "<td>" . htmlspecialchars($Row["Email"]) . "</td>";
                                         echo "<td>" . htmlspecialchars($Row["Gender"]) . "</td>";
+                                        echo "<td>" . htmlspecialchars($Row["Type_Responsible"]) . "</td>";
+                                        echo "<td>" . htmlspecialchars($Row["Status_Responsible"]) . "</td>";
                                         echo "<td>" . htmlspecialchars($Row["Comment_Responsible"]) . "</td>";
                                         echo "<td>" . htmlspecialchars($Row["Date"]) . "</td>";
                                         echo "<td>";
@@ -756,7 +686,7 @@ if (!isset($_SESSION['Id_User'])) {
                     </div>
                 </div>
 
-                <form id="responsibleForm" action="../Configuration/Process_Academic_Data.php" method="POST">
+                <form id="responsibleForm" action="../Configuration/Process_Program_Data.php" method="POST">
                     <div class="modal fade" id="responsibleModal" tabindex="-1" aria-labelledby="responsibleModalLabel" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered modal-lg">
                             <div class="modal-content">
@@ -790,15 +720,28 @@ if (!isset($_SESSION['Id_User'])) {
                                                 <input type="text" class="form-control" id="First_LastName" name="First_LastName" oninput="lettersOnly(this)">
                                             </div>
 
-                                            <div class="mb-3">
-                                                <label for="Date_Birth" class="form-label">Fecha de Nacimiento</label>
-                                                <input type="date" class="form-control" id="Date_Birth" name="Date_Birth">
-                                            </div>
 
                                             <div class="mb-3">
                                                 <label for="Email" class="form-label">Correo Electrónico</label>
                                                 <input type="email" class="form-control" id="Email" name="Email" onblur="validateEmail(this)">
                                             </div>
+
+                                            <div class="mb-3">
+                                                <label for="Gender" class="form-label">Género</label>
+                                                <select id="Gender" name="Gender" class="form-select">
+                                                    <option value="" disabled selected>Seleccione Género</option>
+                                                    <option value="Female">Femenino</option>
+                                                    <option value="Male">Masculino</option>
+                                                    <option value="Other">Otro</option>
+                                                </select>
+                                            </div>
+
+
+                                            <div class="mb-3">
+                                                <label for="Status_Responsible" class="form-label">Estado del Responsable</label>
+                                                <input type="text" class="form-control" id="Status_Responsible" name="Status_Responsible">
+                                            </div>
+
 
                                             <div class="mb-3">
                                                 <label for="Date_Responsible" class="form-label">Fecha de Registro</label>
@@ -809,7 +752,7 @@ if (!isset($_SESSION['Id_User'])) {
                                         <div class="col-md-6">
                                             <div class="mb-3">
                                                 <label for="Identification_Document" class="form-label">Número de Identificación</label>
-                                                <input type="text" class="form-control" id="Identification_Document" name="Identification_Document" readonly>
+                                                <input type="text" class="form-control" id="Identification_Document" name="Identification_Document">
                                             </div>
 
                                             <div class="mb-3">
@@ -828,19 +771,17 @@ if (!isset($_SESSION['Id_User'])) {
                                             </div>
 
                                             <div class="mb-3">
-                                                <label for="Gender" class="form-label">Género</label>
-                                                <select id="Gender" name="Gender" class="form-select">
-                                                    <option value="" disabled selected>Seleccione Género</option>
-                                                    <option value="Female">Femenino</option>
-                                                    <option value="Male">Masculino</option>
-                                                    <option value="Other">Otro</option>
-                                                </select>
+                                                <label for="Register_Responsible" class="form-label">Tipo de responsable</label>
+                                                <input type="text" class="form-control" id="Type_Responsible" name="Type_Responsible">
                                             </div>
+
 
                                             <div class="mb-3">
                                                 <label for="Comment_Responsible" class="form-label">Observación del Responsable</label>
                                                 <input type="text" class="form-control" id="Comment_Responsible" name="Comment_Responsible">
                                             </div>
+
+
                                         </div>
                                     </div>
                                 </div>
@@ -889,127 +830,6 @@ if (!isset($_SESSION['Id_User'])) {
                     </div>
                 </form>
 
-
-                <div id="section7" class="mb-4">
-                    <h3>Consultar Asociados Responsables</h3>
-                    <div class="table-responsive">
-                        <table id="data-table" class="table table-striped data-table table7">
-                            <thead>
-                                <tr>
-                                    <!-- Table headers -->
-                                    <th> </th>
-                                    <th>NOMBRE DE ASOCIADO</th>
-                                    <th>NOMBRE DE RESPONSABLE</th>
-                                    <th> </th>
-                                    <th>ACCIÓN</th>
-
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php
-                                // Display data from database
-                                if ($ResultResponsibleAssociate !== false && $ResultResponsibleAssociate->num_rows > 0) {
-                                    while ($Row = mysqli_fetch_assoc($ResultResponsibleAssociate)) {
-                                        echo "<tr>";
-                                        echo "<td>" . htmlspecialchars($Row["Id_RA"]) . "</td>";
-                                        echo "<td>" . htmlspecialchars($Row["A_Name"]) . "</td>";
-                                        echo "<td>" . htmlspecialchars($Row["Full_Name"]) . "</td>";
-                                        echo "<td>" . htmlspecialchars($Row["Date"]) . "</td>";
-                                        echo "<td>";
-                                        echo "<button class='btn btn-sm btn-primary view-btn' data-bs-toggle='modal' data-bs-target='#ARModal'><i class='bx bx-show-alt'></i></button> ";
-                                        echo "</td>";
-                                        echo "</tr>";
-                                    }
-                                }
-                                ?>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
-                <div class="modal fade" id="ARModal" tabindex="-1" aria-labelledby="ARModalLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="ARModalLabel">Detalles del Asociado Responsable</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <form id="ARForm" action="../Configuration/Process_Academic_Data.php" method="POST">
-                                <div class="modal-body">
-                                    <input type="hidden" class="form-control" id="Id_RA" name="Id_RA">
-
-                                    <div class="mb-3 input">
-                                        <label for="A_Name" class="form-label">Nombre del Asociado</label>
-                                        <input type="text" class="form-control custom-input" id="A_Name" name="A_Name">
-                                        <label for="A_Name" class="form-label">Nombre del Responsable</label>
-                                        <input type="text" class="form-control custom-input" id="Full_Name" name="Full_Name">
-                                    </div>
-
-                                    <div class="select">
-                                        <div class="mb-3">
-                                            <label for="A_Name" class="form-label">Nombre del Asociado</label>
-                                            <select id="A_Name" name="A_Name" class="form-select custom-select">
-                                                <option value="" disabled selected>Seleccione un Asociado</option>
-                                                <!-- The options will be filled in dynamically  -->
-                                                <?php
-                                                $asociados_query = "SELECT Id_Associate, Associate_Name, Status FROM associates WHERE Status='Active'";
-                                                $getAsociados = mysqli_query($Connection, $asociados_query);
-
-                                                if ($getAsociados) {
-                                                    while ($row = mysqli_fetch_assoc($getAsociados)) {
-                                                        $Id_Associate = $row['Id_Associate'];
-                                                        $Associate_Name = $row['Associate_Name'];
-                                                ?>
-                                                        <option value="<?php echo $Id_Associate; ?>"><?php echo $Associate_Name; ?></option>
-                                                <?php
-                                                    }
-                                                    mysqli_free_result($getAsociados);
-                                                } else {
-                                                    echo "Error al obtener los asociados: " . mysqli_error($Connection);
-                                                }
-                                                ?>
-                                            </select>
-                                        </div>
-
-                                        <div class="mb-3">
-                                            <label for="Responsible_ID" class="form-label">Nombre del Responsable</label>
-                                            <select id="Responsible_ID" name="Responsible_ID" class="form-select custom-select">
-                                                <option value="" disabled selected>Seleccione un Responsable</option>
-                                                <!-- The options will be filled in dynamically  -->
-                                                <?php
-                                                $responsibles_query = "SELECT Id_Responsible, First_Name, First_LastName, Status FROM responsibles WHERE Status='Active'";
-                                                $getResponsibles = mysqli_query($Connection, $responsibles_query);
-
-                                                if ($getResponsibles) {
-                                                    while ($row = mysqli_fetch_assoc($getResponsibles)) {
-                                                        $Id_Responsible = $row['Id_Responsible'];
-                                                        $FullName = $row['First_Name'] . ' ' . $row['First_LastName'];
-                                                ?>
-                                                        <option value="<?php echo $Id_Responsible; ?>"><?php echo $FullName; ?></option>
-                                                <?php
-                                                    }
-                                                    mysqli_free_result($getResponsibles);
-                                                } else {
-                                                    echo "Error al obtener los responsables: " . mysqli_error($Connection);
-                                                }
-                                                ?>
-                                            </select>
-                                        </div>
-                                    </div>
-
-                                    <div class="mb-3">
-                                        <label for="Date_AR" class="form-label">Fecha de Registro</label>
-                                        <input type="date" class="form-control" id="Date_AR" name="Date_AR" readonly>
-                                    </div>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="submit" name="action_edit" value="action_edit" class="btn btn-primary save-changes-asr" style="display: none;">Guardar Cambios</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-
             </div>
         </section>
     </main>
@@ -1018,10 +838,10 @@ if (!isset($_SESSION['Id_User'])) {
     <script src="../JS/Sidebar.js"></script>
     <script src="../JS/Validation.js"></script>
     <script src="../JS/Modal.js"></script>
-    <script src="../JS/Academic_Consultation.js"></script>
+    <script src="../JS/Program_Consultation.js"></script>
     <script src="../bootstrap/js/jquery.min.js"></script>
     <script src="../bootstrap/js/bootstrap.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     <script src="https://cdn.datatables.net/v/bs5/dt-2.1.8/datatables.min.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.24/b-2.2.3/r-2.2.7/sp-1.2.2/sl-1.0.1/datatables.min.js"></script>
@@ -1090,6 +910,12 @@ if (!isset($_SESSION['Id_User'])) {
                         break;
                     case 'Error_BaseDatos':
                         message = 'Error con la base de datos.';
+                        break;
+                    case 'acronimo_existe':
+                        message = 'Las siglas ya existen para otro programa.';
+                        break;
+                    case 'documento_existe':
+                        message = 'El documento de identificación ya existen para otro reponsable.';
                         break;
                     default:
                         message = 'Mensaje de error';

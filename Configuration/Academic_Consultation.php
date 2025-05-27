@@ -5,7 +5,8 @@ if (!isset($_SESSION['Id_User'])) {
 }
 
 try {
-    $QueryStudyType = "SELECT Id_Study_Types, Diminutive_Study, Study_Type, Date, Status FROM study_types WHERE Status = 'Active'";
+
+    $QueryStudyType = "SELECT Id_Study_Types, Acronyms_Study, Study_Type, Date, Status FROM study_types WHERE Status = 'Active'";
     $StatementStudyType = $Connection->prepare($QueryStudyType);
     if ($StatementStudyType === false) {
         header("Location: ../PHP/Academic_Consultation.php?error=Error_BaseDatos");
@@ -16,7 +17,7 @@ try {
         $ResultStudyType = $StatementStudyType->get_result();
        
 
-    $QueryUnits = "SELECT Id_Units, Diminutive_Unit, Attached_Unit, Date, Status FROM attached_units WHERE Status = 'Active'";
+    $QueryUnits = "SELECT Id_Units, Acronyms_Unit, Attached_Unit, Date, Status FROM attached_units WHERE Status = 'Active'";
     $StatementUnits = $Connection->prepare($QueryUnits);
     if ($StatementUnits === false) {
         header("Location: ../PHP/Academic_Consultation.php?error=Error_BaseDatos");
@@ -38,7 +39,7 @@ try {
     $ResultAcademy = $StatementAcademy->get_result();
 
 
-    $QueryUnitResources = "SELECT Id_Resources, Diminutive_Resource, Resource_Name, Date, Status FROM unit_resources WHERE Status = 'Active'";
+    $QueryUnitResources = "SELECT Id_Resources, Acronyms_Resource, Resource_Name, Date, Status FROM unit_resources WHERE Status = 'Active'";
     $StatementUnitResources = $Connection->prepare($QueryUnitResources);
     if ($StatementUnitResources === false) {
         header("Location: ../PHP/Academic_Consultation.php?error=Error_BaseDatos");
@@ -73,7 +74,7 @@ try {
 
 
 
-    $QueryResponsibles = "SELECT Id_Responsible, Document_Type, Identification_Document, Date_Birth, Firts_Name, Second_Name, First_LastName, Second_LastName, Phone_Number, Email, Gender, Comment_Responsible, Date, Status FROM responsibles WHERE Status = 'Active'";
+    $QueryResponsibles = "SELECT Id_Responsible, Document_Type, Identification_Document, Date_Birth, First_Name, Second_Name, First_LastName, Second_LastName, Phone_Number, Email, Gender, Comment_Responsible, Date, Status FROM responsibles WHERE Status = 'Active'";
     $StatementResponsibles = $Connection->prepare($QueryResponsibles);
     if ($StatementResponsibles === false) {
         header("Location: ../PHP/Academic_Consultation.php?error=Error_BaseDatos");

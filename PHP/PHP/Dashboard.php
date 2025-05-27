@@ -1,5 +1,5 @@
 <?php
-// Initialize the session, include database connection settings, require study consultation config, and check user authentication
+// Initialize the session, include database connection settings, require program consultation config, and check user authentication
 session_start();
 include_once('../Configuration/Connection_DB.php');
 
@@ -84,16 +84,17 @@ if (!isset($_SESSION['Id_User'])) {
                         <div class="nav_dropdown">
                             <a href="#" class="nav_link">
                                 <i class="bx bx-book-bookmark nav_icon" style="color: #012460;"></i>
-                                <span class="nav_name">Estudios</span>
+                                <span class="nav_name">Programas</span>
                                 <i class="bx bx-chevron-down nav_dropdown-icon" style="color: #012460;"></i>
                             </a>
 
                             <div class="nav_dropdown-collapse">
                                 <div class="nav_dropdown-content">
-                                    <a href="Academic_Data.php" class="nav_dropdown-item">Registrar Datos Académicos</a>
-                                    <a href="Academic_Consultation.php" class="nav_dropdown-item">Consultar Datos Académicos</a>
-                                    <a href="Register_Study.php" class="nav_dropdown-item">Registrar Tipo de Estudios</a>
-                                    <a href="Study_Information.php" class="nav_dropdown-item">Consultar Estudios</a>
+                                    <a href="Program_Data.php" class="nav_dropdown-item">Registrar Datos de Programa</a>
+                                    <a href="Program_Consultation.php" class="nav_dropdown-item">Consultar Datos de Programa</a>
+                                    <a href="Register_Program.php" class="nav_dropdown-item">Registrar Programa de Educación Permanente</a>
+                                    <a href="Register_Cohort.php" class="nav_dropdown-item">Registrar Cohorte</a>
+                                    <a href="Program_Information.php" class="nav_dropdown-item">Consultar Programas</a>
                                 </div>
                             </div>
                         </div>
@@ -157,7 +158,7 @@ if (!isset($_SESSION['Id_User'])) {
                 </div>
             </div>
 
-            <!-- Display statistics cards for users, students, and studies -->
+            <!-- Display statistics cards for users, students, and programs -->
             <div class="container mt-5">
                 <div class="row">
 
@@ -250,26 +251,26 @@ if (!isset($_SESSION['Id_User'])) {
                                     <div class="col">
                                         <!-- User count display -->
                                         <?php
-                                        $sqlStudies = "SELECT COUNT(*) AS total_Studies FROM studies WHERE Status = 'Active'";
-                                        $resultStudies = $Connection->query($sqlStudies);
+                                        $sqlPrograms = "SELECT COUNT(*) AS total_Programs FROM programs WHERE Status = 'Active'";
+                                        $resultPrograms = $Connection->query($sqlPrograms);
 
-                                        $total_Studies = 0;
-                                        if ($resultStudies->num_rows > 0) {
-                                            $row = $resultStudies->fetch_assoc();
-                                            $total_Studies = $row['total_Studies'];
+                                        $total_Programs = 0;
+                                        if ($resultPrograms->num_rows > 0) {
+                                            $row = $resultPrograms->fetch_assoc();
+                                            $total_Programs = $row['total_Programs'];
                                         }
 
-                                        $formatted_Studies = sprintf('%02d', $total_Studies);
+                                        $formatted_Programs = sprintf('%02d', $total_Programs);
                                         ?>
-                                        <h3 class="display-3"><?php echo $formatted_Studies; ?></h3>
-                                        <h6>ESTUDIOS</h6>
+                                        <h3 class="display-3"><?php echo $formatted_Programs; ?></h3>
+                                        <h6>PROGRAMAS</h6>
                                     </div>
 
                                 </div>
                             </div>
 
                             <div class="card-footer d-flex justify-content-center align-items-center">
-                                <a href="Study_Information.php" class="d-flex align-items-center">
+                                <a href="Program_Information.php" class="d-flex align-items-center">
                                     <span>Ver Más </span>
                                     <i class='bx bx-chevron-right'></i>
                                 </a>

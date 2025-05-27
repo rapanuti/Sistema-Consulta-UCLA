@@ -1,5 +1,5 @@
 <?php
-// Initialize the session, include database connection settings, require study consultation config, and check user authentication
+// Initialize the session, include database connection settings, require program consultation config, and check user authentication
 session_start();
 include_once('../Configuration/Connection_DB.php');
 
@@ -14,7 +14,7 @@ if (!isset($_SESSION['Id_User'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registrar Tipo de Estudio</title>
+    <title>Registrar Programa de Educación Permanente</title>
 
     <!-- External stylesheet links -->
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
@@ -79,16 +79,17 @@ if (!isset($_SESSION['Id_User'])) {
                         <div class="nav_dropdown">
                             <a href="#" class="nav_link">
                                 <i class="bx bx-book-bookmark nav_icon" style="color: #012460;"></i>
-                                <span class="nav_name">Estudios</span>
+                                <span class="nav_name">Programas</span>
                                 <i class="bx bx-chevron-down nav_dropdown-icon" style="color: #012460;"></i>
                             </a>
 
                             <div class="nav_dropdown-collapse">
                                 <div class="nav_dropdown-content">
-                                    <a href="Academic_Data.php" class="nav_dropdown-item">Registrar Datos Académicos</a>
-                                    <a href="Academic_Consultation.php" class="nav_dropdown-item">Consultar Datos Académicos</a>
-                                    <a href="Register_Study.php" class="nav_dropdown-item">Registrar Tipo de Estudios</a>
-                                    <a href="Study_Information.php" class="nav_dropdown-item">Consultar Estudios</a>
+                                    <a href="Program_Data.php" class="nav_dropdown-item">Registrar Datos de Programa</a>
+                                    <a href="Program_Consultation.php" class="nav_dropdown-item">Consultar Datos de Programa</a>
+                                    <a href="Register_Program.php" class="nav_dropdown-item">Registrar Programa de Educación Permanente</a>
+                                    <a href="Register_Cohort.php" class="nav_dropdown-item">Registrar Cohorte</a>
+                                    <a href="Program_Information.php" class="nav_dropdown-item">Consultar Programas</a>
                                 </div>
                             </div>
                         </div>
@@ -126,34 +127,34 @@ if (!isset($_SESSION['Id_User'])) {
     <main>
         <section>
             <div class="container_form">
-                <header>Registrar Estudio</header>
+                <header>Registrar Programa</header>
 
                 <!-- Registration Form -->
-                <form action="../Configuration/Register_Study.php" method="POST">
+                <form action="../Configuration/Register_Program.php" method="POST">
                     <div class="details ">
-                        <span class="title">Detalles de tipo de Estudio</span>
+                        <span class="title">Detalles de Programa de Educación Permanente</span>
                         <div class="fields">
 
                             <div class="input-field">
-                                <label for="">Tipo de Estudio</label>
-                                <select id="Id_Study_Types" name="Id_Study_Types">
-                                    <option value="" disabled selected>Seleccione el Tipo de Estudio</option>
+                                <label for="">Programa de Educación Permanente</label>
+                                <select id="Id_Program_Types" name="Id_Program_Types">
+                                    <option value="" disabled selected>Seleccione el Programa de Educación Permanente</option>
                                     <!-- The options will be filled in dynamically  -->
                                     <?php
-                                    $StudyType_query = "SELECT Id_Study_Types, Study_Type, Status FROM study_types WHERE Status='Active'";
-                                    $getStudyType = mysqli_query($Connection, $StudyType_query);
+                                    $ProgramType_query = "SELECT Id_Program_Types, Program_Type, Status FROM program_types WHERE Status='Active'";
+                                    $getProgramType = mysqli_query($Connection, $ProgramType_query);
 
-                                    if ($getStudyType) {
-                                        while ($row = mysqli_fetch_assoc($getStudyType)) {
-                                            $Id_Study_Types = $row['Id_Study_Types'];
-                                            $Study_Type = $row['Study_Type'];
+                                    if ($getProgramType) {
+                                        while ($row = mysqli_fetch_assoc($getProgramType)) {
+                                            $Id_Program_Types = $row['Id_Program_Types'];
+                                            $Program_Type = $row['Program_Type'];
                                     ?>
-                                            <option value="<?php echo $Id_Study_Types; ?>"><?php echo $Study_Type; ?></option>
+                                            <option value="<?php echo $Id_Program_Types; ?>"><?php echo $Program_Type; ?></option>
                                     <?php
                                         }
-                                        mysqli_free_result($getStudyType);
+                                        mysqli_free_result($getProgramType);
                                     } else {
-                                        echo "Error al obtener los tipo de estudio: " . mysqli_error($Connection);
+                                        echo "Error al obtener los programas de educación permanente: " . mysqli_error($Connection);
                                     }
                                     ?>
                                 </select>
@@ -186,76 +187,65 @@ if (!isset($_SESSION['Id_User'])) {
                             </div>
 
                             <div class="input-field">
-                                <label for="">Cohorte</label>
-                                <input type="text" placeholder="Ingrese Cohorte" id="Cohort" name="Cohort" required oninput="numbersOnly(this)">
-                            </div>
-
-                            <div class="input-field">
                                 <label for="">Año</label>
                                 <input type="text" placeholder="Ingrese Año" id="Year" name="Year" required oninput="numbersOnly(this)">
                             </div>
 
                             <div class="input-field">
-                                <label for="">Academia</label>
-                                <select id="Id_Academy" name="Id_Academy">
-                                    <option value="" disabled selected>Seleccione Academia</option>
+                                <label for="">Organización Externa</label>
+                                <select id="Id_Organization" name="Id_Organization">
+                                    <option value="" disabled selected>Seleccione Orgnización Externa</option>
                                     <!-- The options will be filled in dynamically  -->
                                     <?php
-                                    $Academy_query = "SELECT Id_Academy, Academy_Name, Status FROM academy WHERE Status='Active'";
-                                    $getAcademy = mysqli_query($Connection, $Academy_query);
+                                    $Organization_query = "SELECT Id_Organization, Organization_Name, Status FROM organization WHERE Status='Active'";
+                                    $getOrganization = mysqli_query($Connection, $Organization_query);
 
-                                    if ($getAcademy) {
-                                        while ($row = mysqli_fetch_assoc($getAcademy)) {
-                                            $Id_Academy = $row['Id_Academy'];
-                                            $Academy_Name = $row['Academy_Name'];
+                                    if ($getOrganization) {
+                                        while ($row = mysqli_fetch_assoc($getOrganization)) {
+                                            $Id_Organization = $row['Id_Organization'];
+                                            $Organization_Name = $row['Organization_Name'];
                                     ?>
-                                            <option value="<?php echo $Id_Academy; ?>"><?php echo $Academy_Name; ?></option>
+                                            <option value="<?php echo $Id_Organization; ?>"><?php echo $Organization_Name; ?></option>
                                     <?php
                                         }
-                                        mysqli_free_result($getAcademy);
+                                        mysqli_free_result($getOrganization);
                                     } else {
-                                        echo "Error al obtener las academias: " . mysqli_error($Connection);
+                                        echo "Error al obtener las Organizaciones: " . mysqli_error($Connection);
                                     }
                                     ?>
                                 </select>
                             </div>
 
                             <div class="input-field">
-                                <label for="">Número Identificación</label>
-                                <input type="text" placeholder="Ingrese Número de Identificación" id="Identification_Document" name="Identification_Document" required>
-                            </div>
-
-                            <div class="input-field">
-                                <label for="">Nombre de Estudio</label>
-                                <input type="text" placeholder="Ingrese Nombre de Estudio" id="Study_Name" name="Study_Name" required>
-                            </div>
-
-                            <div class="input-field">
-                                <label for="">Responsable Asociado</label>
-                                <select id="Id_RA" name="Id_RA">
-                                    <option value="" disabled selected>Seleccione Responsable Asociado</option>
+                                <label for="">Unidad Generadora de Recursos</label>
+                                <select id="Id_Resources" name="Id_Resources">
+                                    <option value="" disabled selected>Seleccione Unidad</option>
                                     <!-- The options will be filled in dynamically  -->
                                     <?php
-                                    if (!mysqli_connect_errno()) {
-                                        $responsibleA_query = "SELECT Id_RA, A_Name, Full_Name FROM responsible_associate";
+                                    $Resources_query = "SELECT Id_Resources, Acronyms_Resource, Resource_Name, Status FROM unit_resources WHERE Status='Active'";
+                                    $getResources = mysqli_query($Connection, $Resources_query);
 
-                                        if ($result = mysqli_query($Connection, $responsibleA_query)) {
-                                            while ($row = mysqli_fetch_assoc($result)) {
-                                                $Id_RA = $row['Id_RA'];
-                                                $A_Name = $row['A_Name'];
-                                                $Full_Name = $row['Full_Name'] ?? '';
-
-                                                echo "<option value='$Id_RA'>$A_Name - $Full_Name</option>";
-                                            }
-
-                                            mysqli_free_result($result);
-                                        } else {
-                                            echo "Error al obtener los responsables asociados: " . mysqli_error($Connection);
+                                    if ($getResources) {
+                                        while ($row = mysqli_fetch_assoc($getResources)) {
+                                            $Id_Resources = $row['Id_Resources'];
+                                            $Acronyms_Resource = $row['Acronyms_Resource'];
+                                            $Resource_Name = $row['Resource_Name'];
+                                    ?>
+                                            <option value="<?php echo $Id_Resources; ?>"><?php echo  "$Acronyms_Resource - $Resource_Name"; ?></option>
+                                    <?php
                                         }
+                                        mysqli_free_result($getResources);
+                                    } else {
+                                        echo "Error al obtener las unidades generadoras: " . mysqli_error($Connection);
                                     }
                                     ?>
-
                                 </select>
+                            </div>
+
+
+                            <div class="input-field">
+                                <label for="">Nombre de Programa</label>
+                                <input type="text" placeholder="Ingrese Nombre de Programa" id="Program_Name" name="Program_Name" required>
                             </div>
 
                             <div class="input-field">
@@ -264,19 +254,13 @@ if (!isset($_SESSION['Id_User'])) {
                             </div>
 
                             <div class="input-field">
-                                <label for="Start_Date" class="form-label">Fecha de Inicio</label>
-                                <input type="date" class="form-control" placeholder="Fecha de Inicio" id="Start_Date" name="Start_Date" required>
+                                <label for="Approval_Date" class="form-label">Fecha de aprobación</label>
+                                <input type="date" class="form-control" placeholder="Fecha de Aprobación" id="Approval_Date" name="Approval_Date" required>
                             </div>
-
-                            <div class="input-field">
-                                <label for="Termination_Date" class="form-label">Fecha de Culminación</label>
-                                <input type="date" class="form-control" placeholder="Fecha de Culminación" id="Termination_Date" name="Termination_Date" required>
-                            </div>
-
 
                             <div class="input-field">
                                 <label for="">Observación</label>
-                                <input type="text" placeholder="Ingrese Observación" id="Comment_Studies" name="Comment_Studies">
+                                <input type="text" placeholder="Ingrese Observación" id="Comment_Programs" name="Comment_Programs">
                             </div>
                         </div>
 
@@ -292,7 +276,7 @@ if (!isset($_SESSION['Id_User'])) {
                                     <h5 class="modal-title" id="SaveStudieLabel">Confirmar Registro</h5>
                                 </div>
                                 <div class="modal-body">
-                                    ¿Desea registrar el tipo de estudio?
+                                    ¿Desea registrar el programa de educación permanente?
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
